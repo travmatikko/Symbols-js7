@@ -1,5 +1,6 @@
 //Завдання 1: Функція для створення символу
 function createSymbol() {
+  return Symbol();
   // Повернемо символ без опису
 }
 
@@ -8,6 +9,8 @@ console.log(createSymbol()); // Виведе Symbol()
 
 //Завдання 2: Функція для створення символу з описом та виведення опису
 function createSymbolWithDescription(property) {
+  // const symbolKey = Symbol(property);
+  return Symbol(property);
   // Створюємо символ symbol з описом property
   //Повертаємо опис символа symbol
 }
@@ -20,6 +23,10 @@ console.log(createSymbolWithDescription("My symbol")); // Виведе My symbol
 
 // Створимо функцію, яка створює об'єкт з властивістю, ключ якої є символом
 function createSymbolProperty(property) {
+  let sym = Symbol(property);
+  [] = property;
+  return sym;
+
   // Створимо змінну sym яка дорівнює символу без опису
   // Створимо пустий об'єкт
   // Додамо властивість до об'єкту, ключем якої буде наш символ, а значенням буде аргумент property
@@ -34,6 +41,10 @@ console.log(
 // Завдання 4. Перевіримо чи є символи унікальними
 // Функція для створення двох символів з однаковим описом та порівнянням
 function createAndCompareTwoSymbols(value) {
+  let sym1 = Symbol("1");
+  let sym2 = Symbol("1");
+
+  console.log(sym1 === sym2);
   // Створюємо два символи з однаковим описом value, та повертаємо результат порівняння двох символів
 }
 
@@ -52,6 +63,10 @@ function createSymbolForKey(key) {
 
 // Функція compareSymbolsForKey порівнює два символи за допомогою оператора '==='
 function compareSymbolsForKey(symbol1, symbol2) {
+  let symbol5 = Symbol.for("key");
+  let symbol6 = Symbol.for("key");
+
+  console.log(symbol5 === symbol6);
   // Використовуємо оператор '===' для порівняння двох символів
   // Якщо два символи однакові, він поверне true, в іншому випадку - false
 }
@@ -65,16 +80,21 @@ console.log(compareSymbolsForKey(symbol5, symbol6)); //Виведе: true
 
 // Функція getSymbolKey приймає символ як аргумент та повертає ключ, який був використаний для його створення
 function getSymbolKey(symbol) {
+  const symId = Symbol.for("myKey");
+  console.log(Symbol.keyFor(symId));
   // Використовуємо Symbol.keyFor(sym) для отримання ключа, який був використаний для створення символу та повертаємо його
 }
 
 console.log("Завдання 6 ====================================");
-let symbolForKey = Symbol.for("myKey"); // Створюємо новий символ або отримуємо існуючий з глобального реєстру символів
-console.log(getSymbolKey(symbolForKey)); // Виводимо ключ символу. Виведе: myKey
+// let symbolForKey = Symbol.for("myKey"); // Створюємо новий символ або отримуємо існуючий з глобального реєстру символів
+// console.log(getSymbolKey(symbolForKey)); // Виводимо ключ символу. Виведе: myKey
 
 // Завдання 7: Використання Symbol.toString
 
 function useSymbolToStringTag() {
+  let myObject = Symbol("CustomObject");
+  return myObject;
+
   // Створюємо пустий об'єкт myObject.
   // Встановлюємо властивість Symbol об'єкту myObject на значення "CustomObject".
   // Повертаємо рядкове представлення myObject[Symbol].
@@ -88,6 +108,8 @@ console.log(useSymbolToStringTag()); //Виведе CustomObject
 // Функція useSymbolDescription використовує властивість Symbol.description для отримання опису символу.
 
 function useSymbolDescription() {
+  const mySymbol = Symbol("mySymbol");
+  return mySymbol;
   // Створюємо символ mySymbol зі значенням "mySymbol".
   // Отримуємо опис символу mySymbol в змінну symbolDescription за допомогою властивості description.
   // Повертаємо symbolDescription
@@ -100,6 +122,19 @@ console.log(useSymbolDescription()); //Виведе mySymbol
 
 // Об'єкт "myObject" представляє значення   from: 1, to: 7, які можна перебрати
 let rangeObject = {
+  from: 1,
+  to: 7,
+
+  [Symbol.iterator]() {
+    this.current = this.from;
+    return this;
+  },
+
+  next() {
+    return this.current < this.to
+      ? { done: false, value: this.current++ }
+      : { done: true };
+  },
   // Використовуємо Symbol.iterator для створення ітератора всередині об'єкта "myObject"
   // this.current присвоюємо this.from
   // Повертаємо this
@@ -112,6 +147,17 @@ let rangeObject = {
 
 // Функція "useSymbolIterator" використовує ітератор для отримання значень об'єкта
 function useSymbolIterator(obj) {
+  const arr = [1, 2, 3, 4, 5];
+  const iterator = arr[Symbol.iterator]();
+
+  result = iterator.next();
+
+  do {
+    console.log(result.value);
+
+    result = iterator.next();
+  } while (!result.done);
+
   // Проходимо крізь елементи об'єкта obj, використовуючи цикл "for...of"
   // Додаємо кожне значення до масиву "result"
   // Повертаємо масив зі значеннями
