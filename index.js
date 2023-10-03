@@ -56,11 +56,13 @@ console.log(createAndCompareTwoSymbols("My Symbol")); // Виведе false
 
 // Функція createSymbolForKey створює новий символ за допомогою Symbol.for() та повертає його
 function createSymbolForKey(key) {
-  const a = Symbol.for("key");
-  return a;
+  // const a = Symbol.for("key");
+  // return a;
   // Використовуємо Symbol.for() для створення нового символу symbol зі значенням key
   // Symbol.for() шукає символ в глобальному реєстру символів. Якщо символ з таким ключем вже існує, він повертає його, в іншому випадку створює новий символ з даним ключем та додає його в реєстр
   // Повертаємо створений символ
+  let symbol = Symbol.for(key);
+  return symbol;
 }
 
 // Функція compareSymbolsForKey порівнює два символи за допомогою оператора '==='
@@ -70,6 +72,7 @@ function compareSymbolsForKey(symbol1, symbol2) {
   // return symbol5 === symbol6;
   // Використовуємо оператор '===' для порівняння двох символів
   // Якщо два символи однакові, він поверне true, в іншому випадку - false
+  return symbol1 === symbol2;
 }
 
 console.log("Завдання 5 ====================================");
@@ -133,10 +136,13 @@ let rangeObject = {
   },
 
   next() {
-    return this.current < this.to
-      ? { done: false, value: this.current++ }
-      : { done: true };
+    if (this.current < this.to) {
+      return { value: this.current++, done: false };
+    } else {
+      return { done: true };
+    }
   },
+
   // Використовуємо Symbol.iterator для створення ітератора всередині об'єкта "myObject"
   // this.current присвоюємо this.from
   // Повертаємо this
@@ -149,17 +155,22 @@ let rangeObject = {
 
 // Функція "useSymbolIterator" використовує ітератор для отримання значень об'єкта
 function useSymbolIterator(obj) {
-  // const arr = [1, 2, 3, 4, 5];
-  // const iterator = arr[Symbol.iterator]();
-  // result = iterator.next();
-  // do {
-  //   console.log(result.value);
-  //   result = iterator.next();
-  // } while (!result.done);
-  // Проходимо крізь елементи об'єкта obj, використовуючи цикл "for...of"
-  // Додаємо кожне значення до масиву "result"
-  // Повертаємо масив зі значеннями
+  let result = [];
+  for (let value of obj) {
+    result = [...result, value];
+  }
+  return result;
 }
+// const arr = [1, 2, 3, 4, 5];
+// const iterator = arr[Symbol.iterator]();
+// result = iterator.next();
+// do {
+//   console.log(result.value);
+//   result = iterator.next();
+// } while (!result.done);
+// Проходимо крізь елементи об'єкта obj, використовуючи цикл "for...of"
+// Додаємо кожне значення до масиву "result"
+// Повертаємо масив зі значеннями
 
 console.log("Завдання 9 ====================================");
 console.log(useSymbolIterator(rangeObject)); //Виведе [ 1, 2, 3, 4, 5, 6 ]
